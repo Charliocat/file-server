@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface FileServerClient {
     List<FileDetailsResponse> listFiles();
-    void deleteFile(String name);
+    Boolean deleteFile(String name);
     String addFile(String name);
 }

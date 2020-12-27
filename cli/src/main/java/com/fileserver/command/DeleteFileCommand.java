@@ -25,7 +25,8 @@ public class DeleteFileCommand implements Runnable {
 
     @Override
     public void run() {
-        fileServerClient.deleteFile(archive.getName());
+        if(fileServerClient.deleteFile(archive.getName()))
+            System.out.println("File deleted");
     }
 
 }

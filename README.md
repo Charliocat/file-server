@@ -1,12 +1,12 @@
-# Drone Simulator
+# File Storage Service
 
 
 ## Requirements
 - Java 8+ : [JDK 8]
 - Maven 3.6.0+ : [Maven]
-- Node v14.5.0
+- Node v14.5.0 : [Node]
 
-## Running Application
+##Building and Running Application
 - Build with Maven wrapper:
 ```
 ./mvnw clean package
@@ -14,44 +14,87 @@
 
 - Run Application jar with:
 ```
-java -jar target/drone-simulation-1.0-SNAPSHOT-jar-with-dependencies.jar
+java -jar application/target/application-1.0.0.jar
 ```
-## Applicatoin Details
-### Problem description
-#### Scenario
-There are two automatic drones that fly around London and report on traffic conditions. When a drone flies over a tube station, it assesses what the traffic condition is like in the area, and reports on it.
-#### Task
-Write a simulation that has one dispatcher and two drones. Each drone should "move" independently on different processes. The dispatcher should send the coordinates to each drone detailing where the drone's next position should be. The dispatcher should also be responsible for terminating the program. 
-When the drone receives a new coordinate, it moves, checks if there is a tube station in the area, and if so, reports on the traffic conditions there. 
-#### Notes
-- The simulation should finish @ 08:10, where the drones will receive a "SHUTDOWN" signal.
-- The two drones have IDs 6043 and 5937. There is a file containing their lat/lon points for their routes. The csv file layout is drone id,latitude,longitude,time
-- There is also a file with the lat/lon points for London tube stations. station,lat,lon
-- Traffic reports should have the following format:
-    - Drone ID
-    - Time
-    - Speed
-    - Conditions of Traffic (HEAVY, LIGHT, MODERATE). This can be chosen randomly.
-### Remarks
-- Assume that the drones follow a straight line between each point, travelling at constant speed.
-- Disregard the fact that the start time is not in synch. The dispatcher can start pumping data as soon as it has read the files.
-- A nearby station should be less than 350 meters from the drone's position.
-- Bonus point: Put a constraint on each drone to have limited memory, so they can only consume ten points at a time.
+
+The fullstack application runs on port: 8091.
+<br>
+The Frontend and CLI communicate using http://localhost:8091 (hardcoded) it can be changed in the main method
+of ApplicationCLI and package.json from frontend.
+<br>
+When running the application a folder named storage-temp is created to the root directory
+and contains the uploaded files.
+
+- Run CLI-Application jar with:
+```
+java -jar cli/target/cli-1.0.0.jar 
+```
+#### Commands
+
+- To list files:
+`list-files`
+```
+file1.txt
+file2.ppt
+```
+
+- To upload a file:
+`upload-file`
+```
+Usage:  upload-file [-h] -f=FILE_PATH
+upload file
+  -f, --file=FILE_PATH   file path
+  -h, --help
+```
+
+- To delete a file:
+`delete`
+```
+Usage:  delete [-h] -f=FILE_NAME
+delete file
+  -f, --file=FILE_NAME   file name to delete
+  -h, --help
+```
+- To exit CLI:
+`exit`
+
+All the available commands:
+```
+fs-store> help
+  System:
+    exit        exit from app/script
+    help        
+  Builtins:
+    history     list history of commands
+    keymap      manipulate keymaps
+    less        file pager
+    nano        edit files
+    setopt      set options
+    setvar      set lineReader variable value
+    ttop        display and update sorted information about threads
+    unsetopt    unset options
+    widget      manipulate widgets
+  PicocliCommands:
+    delete      delete file
+    help        
+    list-files  list files
+    upload-file upload file
+````
+
+The cli communicates to the backend through http
+
 
 ### Application Design
-The application has been implemented using the [Akka] framework. 
-
-Thanks to [Akka] send message from one proces to another is easy. In this case is used to simulate the event communication between all the application agents.
-
-The parts of the application are: 
-- `Main`: Handles the ticker, Dispatcher and TrafficReporter, sends simulated time events to the Dispatcher. 
-- `Dispatcher`: Handles data related to drones. Also in charge to stop the simulation when is time.
-- `Dron`: Handles data and sends their position to the TrafficReporter
-- `TrafficReporter`: Handles data from drones and checks their distance to the stations. Prints Report if corresponds.
+The application consists of 3 java modules and, a React frontend
+- `application`: core module contains the business logic and the rest controller
+- `rest-client:` contains an http client to communicate with the application
+- `cli`: command line interface
+- `frontend-cg-file-server`: ReactJS application
 
 ### Logs
-Each run a new drone-simulation.log file is created with the last execution output.
+Each run a new logs/file-server-logs.log file is created with the last execution output.
 
 [JDK 8]: https://jdk.java.net/8/
 [Maven]: https://maven.apache.org/install.html
-[Akka]: https://akka.io/
+[Node]: https://nodejs.org/en/blog/release/v14.5.0/
+
