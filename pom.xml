@@ -15,9 +15,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.fileserver</groupId>
-	<artifactId>cg-file-server</artifactId>
+	<artifactId>file-server</artifactId>
 	<version>1.0.0</version>
-	<name>cg-file-server</name>
+	<name>file-server</name>
 	<description>File Server demo project </description>
 
 	<properties>
