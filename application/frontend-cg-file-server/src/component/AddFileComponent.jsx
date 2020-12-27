@@ -25,6 +25,12 @@ class AddFileComponent extends Component {
 
     // On file upload (click the upload button) 
     onFileUpload = () => {
+        this.setState({
+            successUpload: null,
+            failedUpload: null,
+            message: null
+        });
+
         if (this.state.selectedFile) {
             // Create an object of formData 
             const formData = new FormData();
@@ -45,14 +51,13 @@ class AddFileComponent extends Component {
                     response => {
                         this.setState({
                             successUpload: true,
-                            message: `Uploaded file ${this.state.selectedFile.name} Successful`
+                            message: response.data.message
                         });
                     }
                 ).catch(error => {
-                    console.log(error)
                     this.setState({
                         failedUpload: true,
-                        message: `File ${this.state.selectedFile.name} not uploaded`
+                        message: error.response.data.message
                     });
                 });
         }

@@ -28,7 +28,7 @@ public class FileStorageController {
             String message = "Uploaded the file successfully: " + file.getOriginalFilename();
             return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse(message));
         } catch (Exception e) {
-            String message = "Could not upload the file: " + file.getOriginalFilename() + "!";
+            String message = "Could not upload the file: " + file.getOriginalFilename();
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new MessageResponse(message));
         }
     }
@@ -45,8 +45,10 @@ public class FileStorageController {
     }
 
     @DeleteMapping("/{name}")
-    public void deleteFile(@PathVariable String name) {
-        fileStorageServer.deleteFile(name);
+    public ResponseEntity<MessageResponse> deleteFile(@PathVariable String name) {
+        if(fileStorageServer.deleteFile(name))
+            return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse("File deleted"));
+        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new MessageResponse("File not deleted"));
     }
 
 }
