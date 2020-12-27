@@ -1,7 +1,6 @@
 package com.fileserver.command;
 
 import com.fileserver.restclient.FileServerClient;
-import com.fileserver.restclient.FileServerClientImpl;
 import picocli.CommandLine;
 
 import java.io.File;
@@ -12,10 +11,17 @@ import java.io.File;
 )
 public class DeleteFileCommand implements Runnable {
 
-    private final FileServerClient fileServerClient = new FileServerClientImpl("http://localhost:8081");
+    private final FileServerClient fileServerClient;
 
-    @CommandLine.Option(names = { "-f", "--file" }, paramLabel = "ARCHIVE", description = "the archive file")
+    @CommandLine.Option(names = { "-f", "--file" }, paramLabel = "FILE_NAME", description = "file name to delete", required = true)
     File archive;
+
+    @CommandLine.Option(names = {"-h", "--help"}, usageHelp = true)
+    boolean help;
+
+    public DeleteFileCommand(FileServerClient fileServerClient) {
+        this.fileServerClient = fileServerClient;
+    }
 
     @Override
     public void run() {

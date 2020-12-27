@@ -1,7 +1,6 @@
 package com.fileserver.command;
 
 import com.fileserver.restclient.FileServerClient;
-import com.fileserver.restclient.FileServerClientImpl;
 import picocli.CommandLine;
 
 @CommandLine.Command(
@@ -10,10 +9,16 @@ import picocli.CommandLine;
 )
 public class AddFileCommand implements Runnable {
 
-    private final FileServerClient fileServerClient = new FileServerClientImpl("http://localhost:8081");
+    private final FileServerClient fileServerClient;
 
-    @CommandLine.Option(names = {"-f", "--file"}, paramLabel = "FILE_PATH", description = "file path")
+    @CommandLine.Option(names = {"-f", "--file"}, paramLabel = "FILE_PATH", description = "file path", required = true)
     String path;
+
+    @CommandLine.Option(names = {"-h", "--help"}, usageHelp = true) boolean help;
+
+    public AddFileCommand(FileServerClient fileServerClient) {
+        this.fileServerClient = fileServerClient;
+    }
 
     @Override
     public void run() {

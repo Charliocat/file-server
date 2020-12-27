@@ -3,6 +3,8 @@ package com.fileserver;
 import com.fileserver.command.AddFileCommand;
 import com.fileserver.command.DeleteFileCommand;
 import com.fileserver.command.ListFilesCommand;
+import com.fileserver.restclient.FileServerClient;
+import com.fileserver.restclient.FileServerClientImpl;
 import org.fusesource.jansi.AnsiConsole;
 import org.jline.console.SystemRegistry;
 import org.jline.console.impl.Builtins;
@@ -33,7 +35,7 @@ public class ApplicationCLI {
                     "Hit @|magenta ALT-S|@ to toggle tailtips.",
                     ""},
             footer = {"", "Press Ctl-D to exit."},
-            subcommands = {AddFileCommand.class, ListFilesCommand.class, DeleteFileCommand.class, CommandLine.HelpCommand.class})
+            subcommands = {CommandLine.HelpCommand.class})
     static class CliCommands implements Runnable {
         LineReaderImpl reader;
         PrintWriter out;
@@ -58,6 +60,8 @@ public class ApplicationCLI {
     public static void main(String[] args) {
         AnsiConsole.systemInstall();
         try {
+            FileServerClient fileServerClient = new FileServerClientImpl("http://localhost:8091");
+
             // set up JLine built-in commands
             Builtins builtins = new Builtins(ApplicationCLI::workDir, null, null);
             builtins.alias("zle", "widget");
@@ -65,6 +69,9 @@ public class ApplicationCLI {
             // set up picocli commands
             CliCommands commands = new CliCommands();
             CommandLine cmd = new CommandLine(commands);
+            cmd.addSubcommand(new AddFileCommand(fileServerClient));
+            cmd.addSubcommand(new DeleteFileCommand(fileServerClient));
+            cmd.addSubcommand(new ListFilesCommand(fileServerClient));
             PicocliCommands picocliCommands = new PicocliCommands(ApplicationCLI::workDir, cmd);
 
             Parser parser = new DefaultParser();

@@ -2,7 +2,6 @@ package com.fileserver.command;
 
 import com.fileserver.restclient.FileDetailsResponse;
 import com.fileserver.restclient.FileServerClient;
-import com.fileserver.restclient.FileServerClientImpl;
 import picocli.CommandLine;
 
 import java.util.List;
@@ -13,7 +12,11 @@ import java.util.List;
 )
 public class ListFilesCommand implements Runnable {
 
-    private final FileServerClient fileServerClient = new FileServerClientImpl("http://localhost:8081");
+    private final FileServerClient fileServerClient;
+
+    public ListFilesCommand(FileServerClient fileServerClient) {
+        this.fileServerClient = fileServerClient;
+    }
 
     @Override
     public void run() {
