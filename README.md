@@ -94,7 +94,7 @@ The application consists of 3 java modules and, a React frontend
 - `application`: core module contains the business logic and the rest controller
 - `rest-client:` contains an http client to communicate with the application
 - `cli`: command line interface
-- `frontend-cg-file-server`: ReactJS application
+- `application/frontend-file-server`: ReactJS application
 
 ### Logs
 Each run a new logs/file-server-logs.log file is created with the last execution output.
