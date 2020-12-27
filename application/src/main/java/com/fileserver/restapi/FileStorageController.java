@@ -26,7 +26,7 @@ public class FileStorageController {
         try {
             fileStorageServer.save(file);
             String message = "Uploaded the file successfully: " + file.getOriginalFilename();
-            return ResponseEntity.status(HttpStatus.OK).body(new MessageResponse(message));
+            return ResponseEntity.status(HttpStatus.CREATED).body(new MessageResponse(message));
         } catch (Exception e) {
             String message = "Could not upload the file: " + file.getOriginalFilename();
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new MessageResponse(message));
