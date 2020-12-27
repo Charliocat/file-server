@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 public class FileStorageServerImpl implements FileStorageServer {
 
     private final static Logger logger = LogManager.getLogger(FileStorageServerImpl.class);
-    private final Path root = Paths.get("tmp");
+    private final Path root = Paths.get("storage-tmp");
 
     @Override
     public void init() {
