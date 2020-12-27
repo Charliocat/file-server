@@ -1,6 +1,5 @@
 package com.fileserver.restclient;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -34,9 +33,14 @@ public class FileServerClientImpl implements FileServerClient {
     }
 
     @Override
-    public void deleteFile(String name) {
+    public Boolean deleteFile(String name) {
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.delete(baseUrl + API_RESOURCE_PATH + "/" + name);
+        try {
+            restTemplate.delete(baseUrl + API_RESOURCE_PATH + "/" + name);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     @Override
@@ -54,7 +58,7 @@ public class FileServerClientImpl implements FileServerClient {
         try {
             ResponseEntity<String> response = restTemplate
                     .postForEntity(baseUrl + API_RESOURCE_PATH, requestEntity, String.class);
-            if(response.getStatusCode().is2xxSuccessful())
+            if (response.getStatusCode().is2xxSuccessful())
                 return "File uploaded";
             return "File not uploaded";
         } catch (Exception e) {
