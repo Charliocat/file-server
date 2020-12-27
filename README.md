@@ -25,6 +25,11 @@ of ApplicationCLI and package.json from frontend.
 When running the application a folder named storage-temp is created to the root directory
 and contains the uploaded files.
 
+Configuration, can be changed in application.properties file:
+<br>
+**Max size file to upload is *500KB***  
+**Max size file per request *500KB***
+
 - Run CLI-Application jar with:
 ```
 java -jar cli/target/cli-1.0.0.jar 
